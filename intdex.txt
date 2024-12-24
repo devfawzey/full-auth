@@ -1,0 +1,71 @@
+const sendResetPasswordEmail = async (req, res) => {
+ // email && email is verified
+ const { email } = req.body
+
+ if (!email) {
+  throw new BadRequestError("email is required")
+ }
+
+ const user = await User.findOne({ email })
+
+ if (!user) {
+  throw new NotFoundError("email doesnt exist!!")
+ }
+
+ // if there is a otp before dont do anything  
+ if (user.resetPasswordToken.code && user.resetPasswordToken.expiresAt > new Date()) {
+  return res.status(200).json({ msg: "password reset token is already sent pls check your email" })
+ }
+ const passwordResetToken = crypto.randomBytes(70).toString('hex')
+ // user exist then send otp to verify that he can
+ try {
+  await sendEmail({ email, isEmail: false, message: "password reset", token: passwordResetToken }).then((value) => {
+   console.log({ value })
+   console.log("on value catchgin")
+   user.resetPasswordToken.code = createHash(passwordResetToken);
+   user.resetPasswordToken.expiresAt = new Date(Date.now() + process.env.PASSWORD_RESET_TOKEN_EXPIRESAT)
+  }).catch((err) => {
+   console.log("on try catchgin")
+
+   user.resetPasswordToken.code = null;
+   user.resetPasswordToken.expiresAt = null
+   throw new BadRequestError("something happen while sending otp please try again")
+  }).finally(async () => {
+   console.log("on finaly catchgin")
+   return res.status(StatusCodes.OK).json({ msg: "password reset token sent please check your email!" })
+  })
+ } catch (err) {
+  console.log("catchgin")
+  user.resetPasswordToken.code = null;
+  user.resetPasswordToken.expiresAt = null
+  throw new BadRequestError("something happen while sending otp please try again!!")
+ }
+ await user.save()
+ console.log("catchgin")
+ return res.status(400).json({ msg: "wt" })
+
+}
+
+
+
+module.exports = async ({ email = "ahmed.booley@gmail.com", OTP, message = "Email Verification", isEmail = true, token }) => {
+
+ return transporter.verify(async (err, success) => {
+  if (err) {
+   console.log({ err })
+   return { err }
+  } else {
+   console.log({ allgood: true })
+   // send mail with defined transport object
+   const info = await transporter.sendMail({
+    from: '"DevFawzey" <devfawzey@gmail.com>',
+    to: email,
+    subject: "Verification", // Subject line
+    text: message, // plain text body
+    html: isEmail ? VERIFICATION_EMAIL_TEMPLATE.replace("{code}", OTP) : PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", `http://localhost:4050/api/v1/auth/reset-password?token=${token}&email=${email}`), // html body
+   });
+   return info
+  }
+ })
+
+}

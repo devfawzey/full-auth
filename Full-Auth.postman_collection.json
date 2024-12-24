@@ -1,0 +1,341 @@
+{
+	"info": {
+		"_postman_id": "08568968-d8a1-465b-a267-4137f4fcddea",
+		"name": "Full-Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35037730"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"mohammed\",\r\n    \"password\": \"password\",\r\n    \"email\": \"mohammedalsydy21@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/auth/register",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const { token } = pm.response.json()\r",
+							"pm.globals.set(\"token\", token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"password\":\"mofawzey_password\",\r\n    \"email\":\"devfawzey@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/auth/login",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Protected",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/protected",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"protected"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/auth/update",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "VerifyEmail",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"devfawzey@gmail.com\",\r\n    \"otp\":\"264317\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/auth/verify-email",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"verify-email"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ForgotPassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"mohammedalsydy21@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/auth/forgot-password",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"forgot-password"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ResetPassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\":\"password\",\r\n    \"email\":\"mohammedalsydy21@gmail.com\",\r\n    \"token\":\"06027be8738ea7d287c112e1652d1bc940e34de0b3a3da9e23a5a6598f2518e7c38f96767ab4859cee96ba70ce908e94d7b0a8ae729a455a60b4a428464825d5a09852885ecc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4050/api/v1/auth/reset-password?token=06027be8738ea7d287c112e1652d1bc940e34de0b3a3da9e23a5a6598f2518e7c38f96767ab4859cee96ba70ce908e94d7b0a8ae729a455a60b4a428464825d5a09852885ecc&email=mohammedalsydy21@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4050",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"reset-password"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "06027be8738ea7d287c112e1652d1bc940e34de0b3a3da9e23a5a6598f2518e7c38f96767ab4859cee96ba70ce908e94d7b0a8ae729a455a60b4a428464825d5a09852885ecc"
+						},
+						{
+							"key": "email",
+							"value": "mohammedalsydy21@gmail.com"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ShowMe",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/auth/me",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "dashboard",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/dashboard",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"dashboard"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/auth/logout",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GithubLogin",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/auth/github",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"github"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "githubCallback",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/auth/github/callback",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"auth",
+						"github",
+						"callback"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
