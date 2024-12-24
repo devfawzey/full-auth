@@ -1,3 +1,4 @@
+const path = require("path")
 // imports
 const cookieParser = require("cookie-parser")
 const session = require("express-session")
@@ -30,6 +31,10 @@ function init(app, express) {
  app.use(passport.session())
  app.use(express.json());
  app.use(cookieParser(process.env.JWT_SECRET));
+
+ // app.use(express.static(path.join(__dirname, 'assets')));
+ app.use("/api-docs", express.static("./assets"));
+
 }
 
 module.exports = init

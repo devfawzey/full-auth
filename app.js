@@ -38,7 +38,6 @@ app.use("/api/v1/", (req, res) => {
  res.status(200).write(`<a href='/api/v1/auth/github'>github login</a>`)
  res.end()
 })
-
 // global Middleware
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
