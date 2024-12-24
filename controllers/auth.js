@@ -233,7 +233,7 @@ const showCurrentUser = async (req, res) => {
 
 
  // exist
- res.status(StatusCodes.OK).json({ user })
+ res.status(StatusCodes.OK).json({ user: userData(user) })
 }
 
 const logout = async (req, res) => {
