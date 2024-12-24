@@ -26,7 +26,7 @@ require("./utils/services")(app, express)
 app.get("/", (req, res) => {
  res.send("<h1>Jobs API</h1> <a href='/api-docs'>Documentation</a>")
 })
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggeerDocument, { customCssUrl: CSS_URL }))
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggeerDocument))
 app.use("/api/v1/auth", authRouter)
 app.use("/api/v1/protected", authenticationMiddleware, (req, res) => {
  res.status(200).json({ user: req.user })
