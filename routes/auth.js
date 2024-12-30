@@ -2,9 +2,9 @@ const router = require("express").Router()
 const { register, login, updateUser, verifyEmail, sendResetPasswordEmail, resetPassword, showCurrentUser, logout } = require("../controllers/auth")
 const authenticationMiddleware = require("../middleware/auth")
 const passport = require("passport")
-const attchCookieToResponse = require("../utils/attchCookieToResponse")
-const createJWT = require("../utils/createJWT")
+const { createJWT, attchCookieToResponse, validators } = require("../utils")
 const checkAlreadyLoggedIn = require("../middleware/checkAlreadyLoggedIn")
+const { authValidators } = validators
 
 // Github Authentication
 // must be loggedOut
@@ -18,11 +18,11 @@ router.get("/github/callback", passport.authenticate("github", { failureRedirect
  res.redirect("/api/v1/auth/me")
 })
 // must be loggedOut
-router.post("/register", checkAlreadyLoggedIn, register)
+router.post("/register", authValidators.register, checkAlreadyLoggedIn, register)
 // must be loggedOut
 router.get("/verify-email", checkAlreadyLoggedIn, verifyEmail)
 // must be loggedOut
-router.post("/login", [checkAlreadyLoggedIn], login)
+router.post("/login", [authValidators.login, checkAlreadyLoggedIn], login)
 // must be loggedIn
 router.get("/me", authenticationMiddleware, showCurrentUser)
 // must be loggedIn

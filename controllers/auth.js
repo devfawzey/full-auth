@@ -5,16 +5,22 @@ const User = require("../models/User")
 const { BadRequestError, CustomAPIError, NotFoundError, UnAuthenticatedError } = require("../errors")
 const { sendEmail, createHash, attchCookieToResponse, createOTP, userData } = require("../utils")
 
-
+/**
+  * @body === username & email & password
+  * @validate username(required,min3,max50),email(isEmail),password(min3,max200) 
+  * @if user exist and has otpCode and expiredDate is still in time
+  *  - @return res(200) msg (email verification otp is alredy sent check your email)
+  * @setAdminRole its first register
+  * @ifUser exist but otp has expired refresh it with new otp
+  * @allGood now create user 
+  * @sendEmail and catch error with clearing emailOTP values===null
+  * @response (200) verification code has been sent
+  */
 const register = async (req, res) => {
  // check if user exist if not create user with hashedOTp,with expireDate
  const { email } = req.body
  let user = await User.findOne({ email })
 
- // if user exist and already verified
- if (user && user.isEmailVerified) {
-  return res.status(200).json({ msg: "Email exist and verified!" })
- }
  // if otp has sent and user tried to get another one before it expires
  if (user && user.verifyEmailOtp.code && user.verifyEmailOtp.expiresAt > new Date()) {
   return res.status(StatusCodes.ACCEPTED).json({ message: "email verification otp sent check your email" })

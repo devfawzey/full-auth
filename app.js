@@ -13,6 +13,7 @@ const authRouter = require("./routes/auth")
 const errorHandlerMiddleware = require("./middleware/error-handler")
 const notFoundMiddleware = require("./middleware/not-found")
 const authenticationMiddleware = require("./middleware/auth")
+const validatorsMiddleware = require("./middleware/validators")
 
 const swaggerUI = require("swagger-ui-express")
 const swaggeerDocument = require("./swagger.json")
@@ -46,7 +47,7 @@ app.use(errorHandlerMiddleware)
 const start = async () => {
  try {
   await dbConnect()
-  app.listen(process.env.PORT, () => console.log(`running on ${process.env.BASE_URL}`))
+  app.listen(process.env.PORT, () => console.log(`running on ${process.env.NODE_DEV ? process.env.BASE_URL_DEV : process.env.BASE_URL}`))
  } catch (err) {
   console.log({ err })
  }

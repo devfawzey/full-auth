@@ -7,6 +7,7 @@ const verifyToken = require("./verifyToken")
 const createJWT = require("./createJWT")
 const createOTP = require("./createOTP")
 const userData = require("./userData")
+const validators = require("./validators")
 
 module.exports = {
  attchCookieToResponse,
@@ -17,5 +18,6 @@ module.exports = {
  verifyToken,
  createJWT,
  createOTP,
- userData
+ userData,
+ validators
 }
