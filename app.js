@@ -47,7 +47,7 @@ app.use(errorHandlerMiddleware)
 const start = async () => {
  try {
   await dbConnect()
-  app.listen(process.env.PORT, () => console.log(`running on ${process.env.NODE_DEV ? process.env.BASE_URL_DEV : process.env.BASE_URL}`))
+  app.listen(process.env.PORT, () => console.log(`running on ${JSON.parse(process.env.NODE_DEV) ? process.env.BASE_URL_DEV : process.env.BASE_URL}`))
  } catch (err) {
   console.log({ err })
  }
