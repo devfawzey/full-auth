@@ -105,10 +105,10 @@
 ### User Management
 
 #### Update User
-- **URL:** `/api/users/update`
+- **URL:** `/api/auth/update`
 - **Method:** `PATCH`
 - **Headers:**
-  - Authorization: `Bearer <JWT_TOKEN>`
+  - Authorization: `CookieToken`
 - **Request Body:**
   ```json
   {
